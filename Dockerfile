@@ -23,7 +23,8 @@ RUN apt-get update && apt-get install -y \
 WORKDIR /app
 
 # Copy backend
-COPY backend/package*.json ./backend/
+# FIX: Changed 'backend' to 'Backend'
+COPY Backend/package*.json ./backend/
 WORKDIR /app/backend
 RUN npm install
 RUN npx playwright install chromium
@@ -37,7 +38,8 @@ RUN npm install
 
 # Copy source code
 WORKDIR /app
-COPY backend ./backend
+# FIX: Changed 'backend' to 'Backend'
+COPY Backend ./backend
 # FIX: Changed 'frontend' to 'Frontend'
 COPY Frontend ./frontend
 
@@ -54,4 +56,3 @@ WORKDIR /app/backend
 EXPOSE 3000
 
 CMD ["node", "server.js"]
-
