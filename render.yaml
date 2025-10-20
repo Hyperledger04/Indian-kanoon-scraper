@@ -1,4 +1,4 @@
-```yaml
+
 services:
   - type: web
     name: indian-kanoon-scraper
@@ -8,4 +8,3 @@ services:
     envVars:
       - key: NODE_ENV
         value: production
-```
