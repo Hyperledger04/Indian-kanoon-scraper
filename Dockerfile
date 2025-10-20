@@ -1,4 +1,3 @@
-
 FROM node:18-bullseye
 
 # Install Playwright dependencies
@@ -31,14 +30,16 @@ RUN npx playwright install chromium
 
 # Copy frontend
 WORKDIR /app
-COPY frontend/package*.json ./frontend/
+# FIX: Changed 'frontend' to 'Frontend'
+COPY Frontend/package*.json ./frontend/
 WORKDIR /app/frontend
 RUN npm install
 
 # Copy source code
 WORKDIR /app
 COPY backend ./backend
-COPY frontend ./frontend
+# FIX: Changed 'frontend' to 'Frontend'
+COPY Frontend ./frontend
 
 # Build frontend
 WORKDIR /app/frontend
