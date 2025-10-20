@@ -1,4 +1,4 @@
-```yaml
+
 version: '3.8'
 
 services:
@@ -10,4 +10,3 @@ services:
       - NODE_ENV=production
       - PORT=3000
     restart: unless-stopped
-```
