@@ -1,4 +1,4 @@
-```
+
 node_modules
 npm-debug.log
 .git
@@ -8,4 +8,3 @@ README.md
 .DS_Store
 frontend/build
 backend/public
-```
