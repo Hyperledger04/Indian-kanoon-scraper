@@ -16,7 +16,7 @@ export async function scrapeDocIds(searchUrl, webhookUrl) {
     // Navigate to search URL
     await page.goto(searchUrl, { 
       waitUntil: 'networkidle',
-      timeout: 30000 
+      timeout: 90000 
     });
     
     await page.waitForTimeout(2000);
