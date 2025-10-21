@@ -4,7 +4,7 @@ import fetch from 'node-fetch';
 // This connects to browserless.io using your API key
 // We will set this in Render's "Environment" settings
 const BROWSERLESS_API_KEY = process.env.BROWSERLESS_API_KEY;
-const BROWSERLESS_URL = `wss://chrome.browserless.io?token=${BROWSERLESS_API_KEY}`;
+const BROWSERLESS_URL = const BROWSERLESS_URL = `wss://production-sfo.browserless.io?token=${BROWSERLESS_API_KEY}`;
 
 export async function scrapeDocIds(searchUrl, webhookUrl) {
   let browser;
