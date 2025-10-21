@@ -14,7 +14,7 @@ export async function scrapeDocIds(searchUrl, webhookUrl) {
     // Instead of launching a local browser, we connect to the remote one
     console.log('Connecting to browserless.io...');
     browser = await chromium.connect(BROWSERLESS_URL, {
-      timeout: 60000 // Give 60s to connect
+      timeout: 120000 // Give 60s to connect
     });
     // --- END OF CHANGE ---
     
