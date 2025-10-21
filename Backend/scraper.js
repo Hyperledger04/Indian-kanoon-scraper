@@ -1,26 +1,37 @@
 import { chromium } from 'playwright';
 import fetch from 'node-fetch';
 
+// This connects to browserless.io using your API key
+// We will set this in Render's "Environment" settings
+const BROWSERLESS_API_KEY = process.env.BROWSERLESS_API_KEY;
+const BROWSERLESS_URL = `wss://chrome.browserless.io?token=${BROWSERLESS_API_KEY}`;
+
 export async function scrapeDocIds(searchUrl, webhookUrl) {
   let browser;
   
   try {
-    // Launch browser
-    browser = await chromium.launch({ 
-      headless: true,
-      args: ['--no-sandbox', '--disable-setuid-sandbox']
+    // --- THIS IS THE MAIN CHANGE ---
+    // Instead of launching a local browser, we connect to the remote one
+    console.log('Connecting to browserless.io...');
+    browser = await chromium.connect(BROWSERLESS_URL, {
+      timeout: 60000 // Give 60s to connect
     });
+    // --- END OF CHANGE ---
     
     const page = await browser.newPage();
     
+    console.log(`Navigating to ${searchUrl}...`);
     // Navigate to search URL
+    // We use 'domcontentloaded' because it's faster and all we need is the HTML
     await page.goto(searchUrl, { 
-      waitUntil: 'networkidle',
+      waitUntil: 'domcontentloaded',
       timeout: 90000 
     });
     
-    await page.waitForTimeout(2000);
+    // This wait is no longer needed, page.goto handles it
+    // await page.waitForTimeout(2000); 
 
+    console.log('Extracting doc IDs...');
     // Extract doc IDs
     const links = await page.$$eval('a[href*="/doc/"]', (anchors) =>
       anchors.map((a) => a.href)
@@ -47,6 +58,7 @@ export async function scrapeDocIds(searchUrl, webhookUrl) {
       docIds
     };
 
+    console.log('Sending to webhook...');
     const webhookResponse = await fetch(webhookUrl, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -71,6 +83,7 @@ export async function scrapeDocIds(searchUrl, webhookUrl) {
     throw error;
   } finally {
     if (browser) {
+      console.log('Closing browser connection.');
       await browser.close();
     }
   }
